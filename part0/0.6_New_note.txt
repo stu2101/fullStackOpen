@@ -1,0 +1,12 @@
+title 0.6: New note
+
+Browser -> Server: HTTP POST https://studies.cs.helsinki.fi/exampleapp/new_note_spa
+note over Server:
+Server responds with status code 201 created,
+instead of status code 302 url redirect in the 
+previous version of the app
+end note
+Server -> Browser: page is updated with new note added
+
+
+

@@ -1,0 +1,23 @@
+title 0.4: New note
+
+Browser -> Server: HTTP POST https://studies.cs.helsinki.fi/exampleapp/new_note
+Server -> Browser: Server reloads page with new note added
+Browser -> Server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/notes
+Server -> Browser: HTML code
+Browser -> Server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/main.css
+Server -> Browser: main.css
+Browser -> Server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/main.js
+Server -> Browser: main.js
+
+note over Browser:
+Browser starts executing js-code 
+that fetches JSON data from server
+end note
+
+Browser -> Server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/data.json
+Server -> Browser: JSON data 
+
+note over Browser:
+Browser executes the event handler
+that renders notes to display
+end note

@@ -3,6 +3,8 @@ import Person from './components/Person'
 
 const App = () => {
 
+    // REMOVE DUMMY DATA WHEN DONE
+    // REMOVE DUMMY DATA WHEN DONE
     const [persons, setPersons] = useState([
         { name: 'Arto Hellas', number: '040-123456', id: 1 },
         { name: 'Ada Lovelace', number: '39-44-5323523', id: 2 },
@@ -11,6 +13,7 @@ const App = () => {
     ])
     const [newName, setNewName] = useState(' ')
     const [newNumber, setNewNumber] = useState(' ')
+    const [filter, setFilter] = useState('');
 
     const addNumber = (event) => {
         event.preventDefault();
@@ -44,18 +47,27 @@ const App = () => {
     }
 
     const handleNameChange = (event) => {
-        console.log(`Name: ${event.target.value}`)
+        // console.log(`Name: ${event.target.value}`)
         setNewName(event.target.value)
     }
 
     const handleNumberChange = (event) => {
-        console.log(`Number: ${event.target.value}`);
+        // console.log(`Number: ${event.target.value}`);
         setNewNumber(event.target.value)
+    }
+
+    const handleFilterChange = (event) => {
+        // console.log('filter value is ' + event.target.value);
+        setFilter(event.target.value)
     }
 
     return (
         <div>
             <h2>Phonebook</h2>
+            <form>
+                filter shown with <input onChange={handleFilterChange}/>
+            </form>
+            <h2>add a new</h2>
             <form onSubmit={addNumber}>
                 <div>
                     name: <input value={newName} onChange={handleNameChange} />
@@ -67,7 +79,7 @@ const App = () => {
             </form>
             <h2>Numbers</h2>
             <ul>
-                {persons.map(person => <Person key={person.name} person={person} />)}
+                {persons.filter(person => person.name.toLowerCase().includes(filter.toLowerCase())).map(person => <Person key={person.name} person={person} />)}
             </ul>
         </div>
 

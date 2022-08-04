@@ -1,19 +1,10 @@
 import { useState } from 'react'
-import Person from './components/Person'
 import PersonForm from './components/PersonForm'
 import Filter from './components/Filter'
 import Numbers from './components/Numbers'
 
 const App = () => {
-
-    // REMOVE DUMMY DATA WHEN DONE
-    // REMOVE DUMMY DATA WHEN DONE
-    const [persons, setPersons] = useState([
-        { name: 'Arto Hellas', number: '040-123456', id: 1 },
-        { name: 'Ada Lovelace', number: '39-44-5323523', id: 2 },
-        { name: 'Dan Abramov', number: '12-43-234345', id: 3 },
-        { name: 'Mary Poppendieck', number: '39-23-6423122', id: 4 }
-    ])
+    const [persons, setPersons] = useState([ ])
     const [newName, setNewName] = useState(' ')
     const [newNumber, setNewNumber] = useState(' ')
     const [filter, setFilter] = useState('');
@@ -21,6 +12,9 @@ const App = () => {
     const addNumber = (event) => {
         event.preventDefault();
 
+        // It wasn't a requirement, but I added a same number check, so if the number you entered
+        // is already in the phonebook, you get alerted and it doesn't go in the phonebook again.
+        // The time of submission in the phonebook is also stored
         const personExists = persons.find(person => person.name === newName) != undefined
         const numberExists = persons.find(person => person.number === newNumber) != undefined
 
@@ -65,6 +59,7 @@ const App = () => {
         <div>
             <h2>Phonebook</h2>
             <Filter onChange={handleFilterChange} />
+
             <h3>add a new</h3>
             <PersonForm
                 onSubmit={addNumber}
@@ -73,13 +68,10 @@ const App = () => {
                 numberValue={newNumber}
                 numberOnChange={handleNumberChange}
             />
-            <h3>Numbers</h3>
-            <Numbers persons={persons}/>
-            <ul>
-                {persons.filter(person => person.name.toLowerCase().includes(filter.toLowerCase())).map(person => <Person key={person.name} person={person} />)}
-            </ul>
-        </div>
 
+            <h3>Numbers</h3>
+            <Numbers persons={persons} filter={filter}/>
+        </div>
     )
 }
 

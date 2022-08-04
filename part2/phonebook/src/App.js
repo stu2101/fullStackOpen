@@ -9,6 +9,12 @@ const App = () => {
     const addNumber = (event) => {
         event.preventDefault();
         console.log('button clicked', event.target);
+        
+        if (persons.find(person => person.name === newName) != undefined) {
+            alert(newName + " is already in the phonebook")
+            setNewName(" ")
+            return;
+        }
 
         const personObject = {
             name: newName,

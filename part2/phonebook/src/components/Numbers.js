@@ -4,7 +4,9 @@ import Person from './Person'
 const Numbers = ({ persons, filter }) => {
     return (
         <ul>
-            {persons.filter(person => person.name.toLowerCase().includes(filter.toLowerCase())).map(person => <Person key={person.name} person={person} />)}
+            {persons
+                .filter(person => person.name.toLowerCase().includes(filter.toLowerCase()))
+                .map(person => <Person key={person.name} person={person} />)}
         </ul>
     )
 }

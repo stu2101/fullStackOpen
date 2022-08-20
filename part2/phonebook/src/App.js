@@ -1,13 +1,25 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import PersonForm from './components/PersonForm'
 import Filter from './components/Filter'
 import Numbers from './components/Numbers'
+import axios from 'axios'
+import personsService from './services/persons'
 
 const App = () => {
-    const [persons, setPersons] = useState([ ])
-    const [newName, setNewName] = useState(' ')
-    const [newNumber, setNewNumber] = useState(' ')
+    const [persons, setPersons] = useState([])
+    const [newName, setNewName] = useState('')
+    const [newNumber, setNewNumber] = useState('')
     const [filter, setFilter] = useState('');
+    const url = 'http://localhost:3001/persons'
+
+
+    useEffect(() => {
+        personsService
+            .getAll()
+            .then(initialPersons => {
+                setPersons(initialPersons)
+            })
+    }, [])
 
     const addNumber = (event) => {
         event.preventDefault();
@@ -15,18 +27,18 @@ const App = () => {
         // It wasn't a requirement, but I added a same number check, so if the number you entered
         // is already in the phonebook, you get alerted and it doesn't go in the phonebook again.
         // The time of submission in the phonebook is also stored
-        const personExists = persons.find(person => person.name === newName) != undefined
+        const personExists = persons.find(person => person.name.toLowerCase() === newName.toLowerCase()) != undefined
         const numberExists = persons.find(person => person.number === newNumber) != undefined
 
         if (personExists) {
             alert(newName + " is already in the phonebook")
-            setNewName(" ")
+            setNewName("")
             return;
         }
 
         if (numberExists) {
             alert(newNumber + " is already in the phonebook")
-            setNewNumber(" ")
+            setNewNumber("")
             return;
         }
 
@@ -36,11 +48,21 @@ const App = () => {
             number: newNumber,
             id: persons.length + 1
         }
-        console.log("personObject is: ", personObject);
 
-        setPersons(persons.concat(personObject));
-        setNewName(" ")
-        setNewNumber(" ")
+        // axios
+        //     .post(url, personObject)
+        //     .then(response => {
+        //         setPersons(persons.concat(response.data))
+        //     })
+
+        personsService
+            .add(personObject)
+            .then(person => {
+                setPersons(persons.concat(person))
+            })
+
+        setNewName("")
+        setNewNumber("")
     }
 
     const handleNameChange = (event) => {

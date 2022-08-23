@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import PersonForm from './components/PersonForm'
 import Filter from './components/Filter'
 import Numbers from './components/Numbers'
-import axios from 'axios'
+import Person from './components/Person'
 import personsService from './services/persons'
 
 const App = () => {
@@ -23,16 +23,22 @@ const App = () => {
 
     const addNumber = (event) => {
         event.preventDefault();
-
-        // It wasn't a requirement, but I added a same number check, so if the number you entered
-        // is already in the phonebook, you get alerted and it doesn't go in the phonebook again.
-        // The time of submission in the phonebook is also stored
         const personExists = persons.find(person => person.name.toLowerCase() === newName.toLowerCase()) != undefined
         const numberExists = persons.find(person => person.number === newNumber) != undefined
 
         if (personExists) {
-            alert(newName + " is already in the phonebook")
-            setNewName("")
+            const message = window.confirm(`${newName} is already added to the phonebook, replace the old number with a new one?`)
+            if (message) {
+                const currentPerson = persons.find(person => person.name === newName)
+                const newPerson = {...currentPerson, number: newNumber}
+                personsService
+                    .update(currentPerson.id, newPerson)
+                    .then(returnedPerson => {
+                        setPersons(persons.map(person => person.name === returnedPerson.name? returnedPerson : person))
+                    })
+                setNewName('')
+                setNewNumber('')
+            }
             return;
         }
 
@@ -48,12 +54,6 @@ const App = () => {
             number: newNumber,
             id: persons.length + 1
         }
-
-        // axios
-        //     .post(url, personObject)
-        //     .then(response => {
-        //         setPersons(persons.concat(response.data))
-        //     })
 
         personsService
             .add(personObject)
@@ -92,7 +92,16 @@ const App = () => {
             />
 
             <h3>Numbers</h3>
-            <Numbers persons={persons} filter={filter}/>
+            {persons
+                .filter(person => person.name.toLowerCase().includes(filter.toLowerCase()))
+                .map(person => <Person key={person.name} person={person} onClick={() => {
+                    const message = window.confirm(`Delete ${person.name} ?`)
+                    if (message) {
+                        const currentId = person.id
+                        personsService.deletePerson(currentId)
+                        setPersons(persons.filter(currentPerson => currentPerson.id !== currentId))
+                    }
+                }} />)}
         </div>
     )
 }

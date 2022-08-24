@@ -1,23 +1,23 @@
 import { useState, useEffect } from 'react'
 import PersonForm from './components/PersonForm'
 import Filter from './components/Filter'
-import Numbers from './components/Numbers'
 import Person from './components/Person'
 import personsService from './services/persons'
+import Message from './components/Message'
 
 const App = () => {
-    const [persons, setPersons] = useState([])
-    const [newName, setNewName] = useState('')
-    const [newNumber, setNewNumber] = useState('')
+    const [persons, setPersons] = useState([]);
+    const [newName, setNewName] = useState('');
+    const [newNumber, setNewNumber] = useState('');
     const [filter, setFilter] = useState('');
-    const url = 'http://localhost:3001/persons'
-
+    const [messageText, setMessageText] = useState(null)
+    const [messageType, setMessageType] = useState('')
 
     useEffect(() => {
         personsService
             .getAll()
             .then(initialPersons => {
-                setPersons(initialPersons)
+                setPersons(initialPersons);
             })
     }, [])
 
@@ -30,14 +30,27 @@ const App = () => {
             const message = window.confirm(`${newName} is already added to the phonebook, replace the old number with a new one?`)
             if (message) {
                 const currentPerson = persons.find(person => person.name === newName)
-                const newPerson = {...currentPerson, number: newNumber}
+                const newPerson = { ...currentPerson, number: newNumber }
                 personsService
                     .update(currentPerson.id, newPerson)
-                    .then(returnedPerson => {
-                        setPersons(persons.map(person => person.name === returnedPerson.name? returnedPerson : person))
+                    .then(response => {
+                        setPersons(persons.map(person => person.name === newPerson.name ? newPerson : person))
+                        setNewName('')
+                        setNewNumber('')
+                        setMessageText(`The number of ${newPerson.name} was changed successfuly`)
+                        setTimeout(() => {
+                            setMessageText(null)
+                        }, 3500)
                     })
-                setNewName('')
-                setNewNumber('')
+                    .catch(error => {
+                        setMessageType('error')
+                        setMessageText(`Information of ${newPerson.name} has already been removed from serer`)
+                        setPersons(persons.filter(person => person.name !== newPerson.name))
+                        setTimeout(() => {
+                            setMessageText(null)
+                            setMessageType('')
+                        }, 3500);
+                    })
             }
             return;
         }
@@ -61,8 +74,14 @@ const App = () => {
                 setPersons(persons.concat(person))
             })
 
-        setNewName("")
-        setNewNumber("")
+        setMessageText(`Added ${newName}`)
+        setTimeout(() => {
+            setMessageText(null)
+        }, 3500)
+
+        setNewName('')
+        setNewNumber('')
+
     }
 
     const handleNameChange = (event) => {
@@ -80,8 +99,8 @@ const App = () => {
     return (
         <div>
             <h2>Phonebook</h2>
+            <Message message={messageText} type={messageType} />
             <Filter onChange={handleFilterChange} />
-
             <h3>add a new</h3>
             <PersonForm
                 onSubmit={addNumber}

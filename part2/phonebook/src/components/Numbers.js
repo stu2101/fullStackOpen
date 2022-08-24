@@ -1,7 +1,6 @@
+// COMPONENT CURRENTLY NOT IS USE
 import React from 'react'
 import Person from './Person'
-import personsService from '../services/persons'
-
 
 const Numbers = ({ persons, filter, onClick}) => {
     return (

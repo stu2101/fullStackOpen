@@ -10,8 +10,8 @@ const App = () => {
     const [newName, setNewName] = useState('');
     const [newNumber, setNewNumber] = useState('');
     const [filter, setFilter] = useState('');
-    const [messageText, setMessageText] = useState(null)
-    const [messageType, setMessageType] = useState('')
+    const [messageText, setMessageText] = useState(null)    // any text for message to pop up, null for message to disappear
+    const [messageType, setMessageType] = useState('')      // "error" for error message, "" for regular message
 
     useEffect(() => {
         personsService
@@ -27,6 +27,8 @@ const App = () => {
         const numberExists = persons.find(person => person.number === newNumber) != undefined
 
         if (personExists) {
+            
+            // Code for overwriting existing person's number
             const message = window.confirm(`${newName} is already added to the phonebook, replace the old number with a new one?`)
             if (message) {
                 const currentPerson = persons.find(person => person.name === newName)
@@ -71,17 +73,22 @@ const App = () => {
         personsService
             .add(personObject)
             .then(person => {
+                setMessageType("")
                 setPersons(persons.concat(person))
+                setMessageText(`Added ${newName}`)
+                setTimeout(() => {
+                    setMessageText(null)
+                }, 3500)
+                setNewName('')
+                setNewNumber('')
             })
-
-        setMessageText(`Added ${newName}`)
-        setTimeout(() => {
-            setMessageText(null)
-        }, 3500)
-
-        setNewName('')
-        setNewNumber('')
-
+            .catch(error => {
+                setMessageType("error");
+                setMessageText(error.response.data.error);
+                setTimeout(() => {
+                    setMessageText(null)
+                }, 3500)
+            })
     }
 
     const handleNameChange = (event) => {

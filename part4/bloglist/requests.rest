@@ -1,3 +1,11 @@
+GET http://localhost:3003/api/blogs
+// get all blogs
+
+###
+GET http://localhost:3003/api/blogs/63245c84efc0561909e390c3
+// get blog by id
+
+###
 POST http://localhost:3003/api/blogs
 Content-Type: application/json
 

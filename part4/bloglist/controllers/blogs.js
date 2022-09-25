@@ -7,6 +7,13 @@ blogRouter.get("/", (request, response) => {
         .then(allBlogs => {
             response.json(allBlogs);
         })
+
+    // // sometimes the db gets clogged and need a way to clear it
+    // Blog
+    //     .deleteMany({})
+    //     .then(() => {
+    //         response.status(204).end();
+    //     })
 })
 
 blogRouter.get("/:id", (request, response, next) => {
@@ -26,19 +33,24 @@ blogRouter.get("/:id", (request, response, next) => {
 blogRouter.post("/", (request, response, next) => {
     const body = request.body;
 
-    // MAY NEED EDITING LATER
-    const blog = new Blog({
-        title: body.title,
-        author: body.author,
-        url: body.url,
-        likes: 0
-    })
-
-    blog.save()
-        .then(savedBlog => {
-            response.json(savedBlog)
+    if (body.title === undefined || body.url === undefined) {
+        response.status(400).end();
+    }
+    else {
+        // MAY NEED EDITING LATER
+        const blog = new Blog({
+            title: body.title,
+            author: body.author,
+            url: body.url,
+            likes: body.likes || 0
         })
-        .catch(error => next(error))
+
+        blog.save()
+            .then(savedBlog => {
+                response.status(201).json(savedBlog)
+            })
+            .catch(error => next(error))
+    }
 })
 
 blogRouter.delete("/:id", (request, response, next) => {

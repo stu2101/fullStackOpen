@@ -19,7 +19,7 @@ const initialBlogs = [
 ]
 
 // this functing should return what is currently in the database
-const blogsInDb = async () => {
+const getBlogsInDb = async () => {
     // get all blogs in db and store then in variable
     const blogs = await Blog.find({});
 
@@ -27,7 +27,7 @@ const blogsInDb = async () => {
     return blogs.map(blog => blog.toJSON());
 }
 
-const nonExistingId = async () => {
+const getNonExistingId = async () => {
     const blog = new Blog({title: "willremovethissoon"})
     await blog.save();
     await blog.remove();
@@ -37,6 +37,6 @@ const nonExistingId = async () => {
 
 module.exports = {
     initialBlogs,
-    blogsInDb,
-    nonExistingId
+    getBlogsInDb,
+    getNonExistingId
 }

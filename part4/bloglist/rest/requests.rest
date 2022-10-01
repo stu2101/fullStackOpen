@@ -10,9 +10,9 @@ POST http://localhost:3003/api/blogs
 Content-Type: application/json
 
 {
-    "title": "test",
-    "author": "test",
-    "url": "test"
+    "title": "another one",
+    "author": "another aouther",
+    "url": "idk"
 }
 
 ###
@@ -27,4 +27,17 @@ Content-Type: application/json
     "author": "test",
     "url": "test",
     "likes": 8
+}
+
+###
+get http://localhost:3003/api/users
+
+###
+post http://localhost:3003/api/users
+Content-Type: application/json
+
+{
+    "username": "test",
+    "name": "test",
+    "password": "test"
 }

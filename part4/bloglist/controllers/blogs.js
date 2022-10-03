@@ -1,12 +1,13 @@
 const blogRouter = require("express").Router();
 const Blog = require("../models/blog")
+const User = require('../models/user');
 
-blogRouter.get("/", (request, response) => {
-    Blog
+blogRouter.get("/", async (request, response) => {
+    const allBlogs = await Blog
         .find({})
-        .then(allBlogs => {
-            response.json(allBlogs);
-        })
+        .populate("user", {username: 1, name: 1})
+
+    response.json(allBlogs)
 
     // // sometimes the db gets clogged and need a way to clear it
     // Blog
@@ -30,27 +31,29 @@ blogRouter.get("/:id", (request, response, next) => {
         .catch(error => next(error))
 })
 
-blogRouter.post("/", (request, response, next) => {
+blogRouter.post("/", async (request, response, next) => {
     const body = request.body;
 
-    if (body.title === undefined || body.url === undefined) {
-        response.status(400).end();
-    }
-    else {
-        // MAY NEED EDITING LATER
-        const blog = new Blog({
-            title: body.title,
-            author: body.author,
-            url: body.url,
-            likes: body.likes || 0
-        })
+    const user = await User.findOne({});
 
-        blog.save()
-            .then(savedBlog => {
-                response.status(201).json(savedBlog)
-            })
-            .catch(error => next(error))
+    if (body.title === undefined || body.url === undefined) {
+        return response.status(400).end();
     }
+
+    // MAY NEED EDITING LATER
+    const blog = new Blog({
+        title: body.title,
+        author: body.author,
+        url: body.url,
+        likes: body.likes || 0,
+        user: user._id
+    })
+
+    const savedBlog = await blog.save();
+    user.blogs = user.blogs.concat(savedBlog._id);
+    await user.save();
+
+    response.status(201).json(savedBlog);
 })
 
 blogRouter.delete("/:id", async (request, response, next) => {
@@ -64,7 +67,7 @@ blogRouter.put("/:id", async (request, response, next) => {
     }
 
     const updatedBlog = await Blog
-        .findByIdAndUpdate(request.params.id, blog, {new: true})
+        .findByIdAndUpdate(request.params.id, blog, { new: true })
 
     response.json(updatedBlog);
 })

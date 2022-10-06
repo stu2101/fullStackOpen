@@ -1,0 +1,28 @@
+GET http://localhost:3003/api/blogs
+
+###
+
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+Authorization: bearer eyJhbGciO5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im5ld1VzZXJuYW1lIiwiaWQiOiI2MzNhOTQxZGUxZDQ0YzlmYmFhZmM4ZjEiLCJpYXQiOjE2NjUwNTAzODB9.QW8q_uXRH7dYZyRwAIsByViLBWy4sZxNVJS_qsbzXB4
+
+{
+    "title": "another one",
+    "author": "another author",
+    "url": "idk"
+}
+
+
+###
+DELETE http://localhost:3003/api/blogs/633059c99a3ffba73d0c83ba
+
+###
+PUT http://localhost:3003/api/blogs/633059c99a3ffba73d0c83ba
+Content-Type: application/json
+
+{
+    "title": "test",
+    "author": "test",
+    "url": "test",
+    "likes": 8
+}

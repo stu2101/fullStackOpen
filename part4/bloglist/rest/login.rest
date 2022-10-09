@@ -2,6 +2,8 @@ post http://localhost:3003/api/login
 Content-Type: application/json
 
 {
-    "username": "newUsername",
+    "username": "newest test username",
     "password": "newPassword"
 }
+
+// use this to get user token

@@ -1,14 +1,14 @@
 GET http://localhost:3003/api/blogs
-
+    
 ###
 
 POST http://localhost:3003/api/blogs
 Content-Type: application/json
-Authorization: bearer eyJhbGciO5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im5ld1VzZXJuYW1lIiwiaWQiOiI2MzNhOTQxZGUxZDQ0YzlmYmFhZmM4ZjEiLCJpYXQiOjE2NjUwNTAzODB9.QW8q_uXRH7dYZyRwAIsByViLBWy4sZxNVJS_qsbzXB4
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im5ld2VzdCB0ZXN0IHVzZXJuYW1lIiwiaWQiOiI2MzQxN2Q1MmQzOTEyNWExZDhlMDQwZGEiLCJpYXQiOjE2NjUyMzYzMjV9.FV4SyBoDZa1yP4ZyfNgI_D4dYfUzTyWn9UJrtzuiqk4
 
 {
-    "title": "another one",
-    "author": "another author",
+    "title": "newest test",
+    "author": "newest test",
     "url": "idk"
 }
 

@@ -127,6 +127,10 @@ test("the likes of a blog can be edited", async () => {
 
 })
 
+test("blogs can be deleted only by the user, who created them", () => {
+    
+})
+
 afterAll(() => {
     mongoose.connection.close()
 })

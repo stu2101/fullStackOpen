@@ -31,12 +31,13 @@ blogRouter.get("/:id", (request, response, next) => {
             }
         })
         .catch(error => next(error))
+
+    console.log("HELLO");
 })
 
 blogRouter.post("/", async (request, response, next) => {
     const body = request.body;
-    const token = request.token
-    const decodedToken = jwt.verify(token, config.SECRET)
+    const decodedToken = jwt.verify(request.token, config.SECRET)
 
     if (!decodedToken.id) {
         return response.status(401).json({ error: "token missing or invalid" })
@@ -65,8 +66,22 @@ blogRouter.post("/", async (request, response, next) => {
 })
 
 blogRouter.delete("/:id", async (request, response, next) => {
-    await Blog.findByIdAndDelete(request.params.id)
-    response.status(204).end();
+    const decodedToken = jwt.verify(request.token, config.SECRET)
+
+    if (!decodedToken.id) {     // THIS IS THE ID OF THE USER
+        return response.status(401).json({ error: "token missing or invalid" })
+    }
+
+    const user = await User.findById(decodedToken.id)
+    
+    const blog = await Blog.findById(request.params.id)
+
+    if (blog.user.toString() === user.id.toString()) {
+        await Blog.findByIdAndDelete(request.params.id)
+        return response.status(204).end();
+    }
+
+    return response.status(401).json({error: "current user is not the creator of the blog"});
 })
 
 blogRouter.put("/:id", async (request, response, next) => {

@@ -1,5 +1,8 @@
 GET http://localhost:3003/api/blogs
-    
+
+###
+
+GET http://localhost:3003/api/blogs/63417db2d39125a1d8e040de
 ###
 
 POST http://localhost:3003/api/blogs
@@ -14,7 +17,8 @@ Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im5ld
 
 
 ###
-DELETE http://localhost:3003/api/blogs/633059c99a3ffba73d0c83ba
+DELETE http://localhost:3003/api/blogs/633a8f39b943c2b9c525e58e
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QiLCJpZCI6IjYzMzgwZGI3ZTI4MDdlZTAwOGM2NmI3YiIsImlhdCI6MTY2NTMzMTM0MH0.3H1FelIo8Lnt9S24XuhamYOc4EHGInndFgn4iIq1eX0
 
 ###
 PUT http://localhost:3003/api/blogs/633059c99a3ffba73d0c83ba

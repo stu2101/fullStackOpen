@@ -37,13 +37,8 @@ blogRouter.get("/:id", (request, response, next) => {
 
 blogRouter.post("/", async (request, response, next) => {
     const body = request.body;
-    const decodedToken = jwt.verify(request.token, config.SECRET)
 
-    if (!decodedToken.id) {
-        return response.status(401).json({ error: "token missing or invalid" })
-    }
-
-    const user = await User.findOne({});
+    const user = request.user;
 
     if (body.title === undefined || body.url === undefined) {
         return response.status(400).end();
@@ -66,13 +61,7 @@ blogRouter.post("/", async (request, response, next) => {
 })
 
 blogRouter.delete("/:id", async (request, response, next) => {
-    const decodedToken = jwt.verify(request.token, config.SECRET)
-
-    if (!decodedToken.id) {     // THIS IS THE ID OF THE USER
-        return response.status(401).json({ error: "token missing or invalid" })
-    }
-
-    const user = await User.findById(decodedToken.id)
+    const user = request.user;
     
     const blog = await Blog.findById(request.params.id)
 

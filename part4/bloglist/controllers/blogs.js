@@ -44,6 +44,10 @@ blogRouter.post("/", async (request, response, next) => {
         return response.status(400).end();
     }
 
+    if (request.headers.authorization === undefined) {
+        return response.status(401).json({ error: "token must be provided" })
+    }
+
     // MAY NEED EDITING LATER
     const blog = new Blog({
         title: body.title,
@@ -62,7 +66,7 @@ blogRouter.post("/", async (request, response, next) => {
 
 blogRouter.delete("/:id", async (request, response, next) => {
     const user = request.user;
-    
+
     const blog = await Blog.findById(request.params.id)
 
     if (blog.user.toString() === user.id.toString()) {
@@ -70,7 +74,7 @@ blogRouter.delete("/:id", async (request, response, next) => {
         return response.status(204).end();
     }
 
-    return response.status(401).json({error: "current user is not the creator of the blog"});
+    return response.status(401).json({ error: "current user is not the creator of the blog" });
 })
 
 blogRouter.put("/:id", async (request, response, next) => {

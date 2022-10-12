@@ -4,16 +4,19 @@ const initialBlogs = [
     {
         title: "First blog",
         author: "First Author",
+        url: "First ULR",
         likes: 3
     },
     {
         title: "Second blog",
         author: "Second Author",
+        url: "Second ULR",
         likes: 5
     },
     {
         title: "Third blog",
         author: "Third Author",
+        url: "Third ULR",
         likes: 0
     }
 ]
@@ -23,7 +26,7 @@ const getBlogsInDb = async () => {
     // get all blogs in db and store then in variable
     const blogs = await Blog.find({});
 
-    // return an array consisting of blogs in the corrent format
+    // return an array consisting of blogs in the correct format
     return blogs.map(blog => blog.toJSON());
 }
 

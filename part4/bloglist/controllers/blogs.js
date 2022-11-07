@@ -40,7 +40,7 @@ blogRouter.post("/", async (request, response, next) => {
 
     const user = request.user;
 
-    if (body.title === undefined || body.url === undefined) {
+    if (!body.title || !body.url) {
         return response.status(400).end();
     }
 

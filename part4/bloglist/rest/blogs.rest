@@ -7,12 +7,12 @@ GET http://localhost:3003/api/blogs/63417db2d39125a1d8e040de
 
 POST http://localhost:3003/api/blogs
 Content-Type: application/json
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlcnNldCIsImlkIjoiNjMzODBjMGFjMmZmODZjYWIyMWI3YjMyIiwiaWF0IjoxNjY1NDEyMTgwfQ.LFAE8zDqZf6VkqMnTjB8Lc5QsZ7LI3Qx78LJk4xKlwA
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QiLCJpZCI6IjYzNTI1ZjkwZjQ2ZDI1ZjkwZWZlNDhiNCIsImlhdCI6MTY2NjM0MjgxNX0.41-05YS1A_6IC5cClcQUEr4G38qfdgKS4P8DnmQeLQo
 
 {
-    "title": "newest test",
-    "author": "newest test",
-    "url": "idk"
+    "title": "third test blog",
+    "author": "test",
+    "url": "test"
 }
 
 
